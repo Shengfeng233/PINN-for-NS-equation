@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from pinn_model import *
 
-x, y, t, u, v, p, N, T = read_data(filename_data)
+x, y, t, u, v, p = read_data_all(filename_data)
 layer_mat = [3, 20, 20, 20, 20, 20, 20, 20, 20, 2]
 pinn_net = PINN_Net(layer_mat)
 pinn_net.load_state_dict(torch.load(filename_load_model, map_location=device))

@@ -1,32 +1,38 @@
+import numpy as np
+
 from pinn_model import *
 import time
 import pandas as pd
 import os
 
-
-
+# 部分时间数据训练（内插&外推）-无数据归一化处理
 # 训练代码主体
-x, y, t, u, v, p, N, T = read_data(filename_data)
+portion_time = 0.5
+x, y, t, u, v, p, feature_mat = read_data_part_time(filename_data, portion_time)
 layer_mat = [3, 20, 20, 20, 20, 20, 20, 20, 20, 2]
 X_random = shuffle_data(x, y, t, u, v, p)
+view_x = X_random.data.numpy()
 # 创建PINN模型实例，并将实例分配至对应设备
 pinn_net = PINN_Net(layer_mat)
 pinn_net = pinn_net.to(device)
 # 损失函数和优化器
 mse = torch.nn.MSELoss()
-losses = []
+# 用以记录各部分损失的列表
+losses = np.empty((0, 3), dtype=float)
+
 if os.path.exists(filename_save_model):
     pinn_net.load_state_dict(torch.load(filename_load_model, map_location=device))
 if os.path.exists(filename_loss):
     loss_read = pd.read_csv('loss.csv', header=None)
     losses = loss_read.values
-    losses = list(losses)
-optimizer = torch.optim.Adam(pinn_net.parameters(), lr=0.00001)
-epochs = 3
+# 优化器和学习率衰减设置
+optimizer = torch.optim.Adam(pinn_net.parameters())
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=100, gamma=0.2)
+epochs = 500
 start_time = time.time()
 
 # 选取batch size 此处也可使用data_loader
-batch_size = 500
+batch_size = 1000
 inner_iter = int(X_random.size(0) / batch_size)
 
 for epoch in range(epochs):
@@ -54,8 +60,8 @@ for epoch in range(epochs):
         del x_train, y_train, t_train, u_train, v_train, p_train, zeros
 
         # 调用f_equation函数进行损失函数各项计算
-        u_predict, v_predict, p_predict, f_equation_x, f_equation_y = f_equation_inverse(batch_t_x, batch_t_y, batch_t_t,
-                                                                                         pinn_net)
+        u_predict, v_predict, p_predict, f_equation_x, f_equation_y = f_equation_identification(batch_t_x, batch_t_y, batch_t_t,
+                                                                                         pinn_net,lam1=1.0, lam2=0.01)
 
         # 计算损失函数
         mse_predict = mse(u_predict, batch_t_u) + mse(v_predict, batch_t_v) + mse(p_predict, batch_t_p)
@@ -67,12 +73,18 @@ for epoch in range(epochs):
             # 每200次迭代输出状态
             if (batch_iter + 1) % 200 == 0:
                 # 添加loss到losses
-                losses.append(loss.data.numpy().reshape(1, 1))
-                print("Epoch:", (epoch+1), "  Bacth_iter:", batch_iter + 1, " Training Loss:", round(float(loss.data), 8),'lam1 = ', pinn_net.lam1.data, "lam2 = ", pinn_net.lam2.data)
+                loss_all = loss.cpu().data.numpy().reshape(1, 1)
+                loss_predict = mse_predict.cpu().data.numpy().reshape(1, 1)
+                loss_equation = mse_equation.cpu().data.numpy().reshape(1, 1)
+                loss_set = np.concatenate((loss_all, loss_predict, loss_equation), 1)
+                losses = np.append(losses, loss_set, 0)
+                print("Epoch:", (epoch+1), "  Bacth_iter:", batch_iter + 1, " Training Loss:", round(float(loss.data), 8))
             # 每1个epoch保存状态（模型状态,loss,迭代次数）
             if (batch_iter + 1) % inner_iter == 0:
                 torch.save(pinn_net.state_dict(), filename_save_model)
                 loss_save = pd.DataFrame(losses)
                 loss_save.to_csv(filename_loss, index=False, header=False)
+                del loss_save
+    scheduler.step()
 print("one oK")
 torch.save(pinn_net.state_dict(), filename_save_model)
