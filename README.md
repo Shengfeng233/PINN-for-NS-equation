@@ -3,6 +3,12 @@ A simple pytorch implementaion of physics informed neural networks for two dimen
 
 The annotates are in Chinese
 
+This implementation uses two dimensional cylinder pass flow data from Raissi(see reference)
+
+Sparse spatio and temporal data training are implemented respectively
+
+You can plot comparsion pics and gifs in plot.py
+
 # Reference:
 Raissi M, Perdikaris P, Karniadakis G E. Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations[J]. Journal of Computational Physics, 2019, 378: 686-707.
 
