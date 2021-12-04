@@ -29,7 +29,6 @@ if os.path.exists(filename_loss):
 optimizer = torch.optim.Adam(pinn_net.parameters())
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=100, gamma=0.2)
 epochs = 500
-start_time = time.time()
 
 # 选取batch size 此处也可使用data_loader
 batch_size = 1000
