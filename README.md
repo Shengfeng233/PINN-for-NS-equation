@@ -3,8 +3,11 @@ A further implementation of PINN-for-NS-eqation
 
 # Major changes:
 1.cosine annealing lr strategy
+
 2.LHS sampling method for equtions points
+
 3.forward problem for sparse data(0.5% of origin data)
+
 
 The annotates are in Chinese
 
