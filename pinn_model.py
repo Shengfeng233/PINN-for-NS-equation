@@ -358,6 +358,16 @@ class PINN_Net(nn.Module):
         mse = torch.nn.MSELoss()
         mse_predict = mse(u_predict, u) + mse(v_predict, v) + mse(p_predict, p)
         return mse_predict
+    
+    # 类内方法：求数据点的loss(不含压力数据)
+    def data_mse_without_p(self, x, y, t, u, v):
+        predict_out = self.forward(x, y, t)
+        psi = predict_out[:, 0].reshape(-1, 1)
+        u_predict = torch.autograd.grad(psi.sum(), y, create_graph=True)[0]
+        v_predict = -torch.autograd.grad(psi.sum(), x, create_graph=True)[0]
+        mse = torch.nn.MSELoss()
+        mse_predict = mse(u_predict, u) + mse(v_predict, v)
+        return mse_predict
 
     # 类内方法：求方程点的loss
     def equation_mse(self, x, y, t, lam1, lam2):
