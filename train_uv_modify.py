@@ -60,7 +60,7 @@ for epoch in range(epochs):
             t_train = X_random[batch_iter * batch_size_data:((batch_iter + 1) * batch_size_data), 2].reshape(batch_size_data, 1).clone().requires_grad_(True).to(device)
             u_train = X_random[batch_iter * batch_size_data:((batch_iter + 1) * batch_size_data), 3].reshape(batch_size_data, 1).clone().requires_grad_(True).to(device)
             v_train = X_random[batch_iter * batch_size_data:((batch_iter + 1) * batch_size_data), 4].reshape(batch_size_data, 1).clone().requires_grad_(True).to(device)
-            p_train = X_random[batch_iter * batch_size_data:((batch_iter + 1) * batch_size_data), 5].reshape(batch_size_data, 1).clone().requires_grad_(True).to(device)
+            # p_train = X_random[batch_iter * batch_size_data:((batch_iter + 1) * batch_size_data), 5].reshape(batch_size_data, 1).clone().requires_grad_(True).to(device)
             x_eqa = Eqa_points[batch_iter * batch_size_eqa:((batch_iter + 1) * batch_size_eqa), 0].reshape(batch_size_eqa, 1).clone().requires_grad_(True).to(device)
             y_eqa = Eqa_points[batch_iter * batch_size_eqa:((batch_iter + 1) * batch_size_eqa), 1].reshape(batch_size_eqa, 1).clone().requires_grad_(True).to(device)
             t_eqa = Eqa_points[batch_iter * batch_size_eqa:((batch_iter + 1) * batch_size_eqa), 2].reshape(batch_size_eqa, 1).clone().requires_grad_(True).to(device)
@@ -73,11 +73,11 @@ for epoch in range(epochs):
                 t_train = X_random[batch_iter * batch_size_data:, 2].reshape(-1, 1).clone().requires_grad_(True).to(device)
                 u_train = X_random[batch_iter * batch_size_data:, 3].reshape(-1, 1).clone().requires_grad_(True).to(device)
                 v_train = X_random[batch_iter * batch_size_data:, 4].reshape(-1, 1).clone().requires_grad_(True).to(device)
-                p_train = X_random[batch_iter * batch_size_data:, 5].reshape(-1, 1).clone().requires_grad_(True).to(device)
+                # p_train = X_random[batch_iter * batch_size_data:, 5].reshape(-1, 1).clone().requires_grad_(True).to(device)
                 x_eqa = Eqa_points[batch_iter * batch_size_eqa:, 0].reshape(-1, 1).clone().requires_grad_(True).to(device)
                 y_eqa = Eqa_points[batch_iter * batch_size_eqa:, 1].reshape(-1, 1).clone().requires_grad_(True).to(device)
                 t_eqa = Eqa_points[batch_iter * batch_size_eqa:, 2].reshape(-1, 1).clone().requires_grad_(True).to(device)
-        mse_predict = pinn_net.data_mse(x_train, y_train, t_train, u_train, v_train, p_train)
+        mse_predict = pinn_net.data_mse_without_p(x_train, y_train, t_train, u_train, v_train)
         mse_equation = pinn_net.equation_mse(x_eqa, y_eqa, t_eqa, lam1=1.0, lam2=0.01)
         # 计算损失函数,不引入压强场的真实值
         loss = mse_predict+mse_equation
