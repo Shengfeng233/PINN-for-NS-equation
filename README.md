@@ -6,7 +6,7 @@ A further implementation of PINN-for-NS-eqation
 
 2.LHS sampling method for equtions points
 
-3.forward problem for sparse data(0.5% of origin data)
+3.forward problem for incomplete data(different areas of missing data)
 
 # Remark
 The annotates are in Chinese
