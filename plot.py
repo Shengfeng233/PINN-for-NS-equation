@@ -4,7 +4,7 @@ import matplotlib as mpl
 import numpy as np
 from pinn_model import *
 import imageio
-
+device = torch.device("cpu")
 mpl.use("Agg")
 
 filename_load_model = './data_new/1/NS_model_train.pt'
