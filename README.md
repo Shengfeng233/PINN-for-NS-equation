@@ -1,5 +1,5 @@
 # PINN-for-NS-equation
-A further implementation of PINN-for-NS-eqation
+A  pytorch implementation of PINN-for-NS-eqation
 
 # Major changes:
 1.cosine annealing lr strategy
