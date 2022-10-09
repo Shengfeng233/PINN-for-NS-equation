@@ -1,5 +1,6 @@
 # PINN-for-NS-equation
 A  pytorch implementation of PINN-for-NS-eqation
+(This repository is actually a remote version of my code. Recently I've working on distributed PINNs and realized some code in this repository was inefficient and unfriendly to users. You can find a more carefully written version in my another repository called "PINN for Turbulence", also, "MPI+PINN" will come online soon.)
 
 # Major changes:
 1.cosine annealing lr strategy
