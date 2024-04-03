@@ -1,25 +1,21 @@
 # PINN-for-NS-equation
 A  pytorch implementation of PINN-for-NS-eqation
 
-(This repository is actually a remote version of my code. Recently I've been working on distributed PINNs and realized some code in this repository was inefficient and unfriendly to users. You can find a more carefully written version in my another repository called "PINN for Turbulence", also, "MPI+PINN" will come online soon.)
+This repository is actually a quite remote version of my code, but people have been constantly asking about questions under this repository, so I decide to update this old repository.
 
-# Major changes:
-1.cosine annealing lr strategy
+Here I present an interesting example of reconstructing flow field of 2D unsteady flow past a circular cylinder at Re=3900. As you can see, PINNs can reconstruct the wake flow with only 36 measurement points available.
 
-2.LHS sampling method for equtions points
-
-3.forward problem for sparse data(0.5% of origin data)
 
 # Remark
-The annotates are in Chinese
-
-This implementation uses two dimensional cylinder pass flow data from Raissi(see reference)
+The annotates are both in Chinese and English
 
 You can plot comparsion pics and gifs in plot.py
 
 # Reference:
+Xu S, Sun Z, Huang R, et al. A practical approach to flow field reconstruction with sparse or incomplete data through physics informed neural network[J]. Acta Mechanica Sinica, 2023, 39(3): 322302.
+
+Xu S, Yan C, Zhang G, et al. Spatiotemporal parallel physics-informed neural networks: A framework to solve inverse problems in fluid mechanics[J]. Physics of Fluids, 2023, 35(6).
+
 Raissi M, Perdikaris P, Karniadakis G E. Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations[J]. Journal of Computational Physics, 2019, 378: 686-707.
 
-Raissi M, Perdikaris P, Karniadakis G E. Physics informed deep learning (part i): Data-driven solutions of nonlinear partial differential equations[J]. arXiv preprint arXiv:1711.10561, 2017.
 
-Raissi M, Perdikaris P, Karniadakis G E. Physics informed deep learning (part ii): Data-driven discovery of nonlinear partial differential equations. arXiv 2017[J]. arXiv preprint arXiv:1711.10566.
