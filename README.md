@@ -4,7 +4,7 @@ A  pytorch implementation of PINN-for-NS-eqation
 This repository is actually a quite remote version of my code, but people have been constantly asking questions under this repository, so I decide to update this old repository.
 
 Here I present an interesting example of reconstructing flow field of 2D unsteady flow past a circular cylinder at Re=3900. As you can see, PINNs can reconstruct the wake flow with only 36 measurement points available.
-The full dataset cylinder_Re3900_ke_all_100snaps.mat can be found and downloaded at <https://github.com/Shengfeng233/PINN-MPI/tree/main/CFD_data> (I am running out of free usage of git_lfs, sorry~)
+The full dataset cylinder_Re3900_ke_all_100snaps.mat can be found and downloaded at <https://drive.google.com/drive/folders/1thZ8X0d-DFc-bgGcw7G76UCBJSdsbfFl?usp=sharing>.
 
 
 # Remark
